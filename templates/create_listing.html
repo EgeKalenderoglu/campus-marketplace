@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Listing - Campus Marketplace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Create Listing</h1>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="title">Item Title</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Example: Calculus Textbook"
+                required
+            >
+
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+                placeholder="Describe the item"
+                required
+            ></textarea>
+
+            <label for="price">Price ($)</label>
+            <input
+                type="number"
+                id="price"
+                name="price"
+                step="0.01"
+                min="0"
+                placeholder="25.00"
+                required
+            >
+
+            <button type="submit">Create Listing</button>
+
+        </form>
+
+        <a href="/">Back to Marketplace</a>
+    </div>
+
+</body>
+</html>

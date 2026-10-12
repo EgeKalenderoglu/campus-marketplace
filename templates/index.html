@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Marketplace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Campus Marketplace</h1>
+
+        <a class="button" href="/create">Create Listing</a>
+
+        <h2>Available Listings</h2>
+
+        {% if listings %}
+
+            {% for listing in listings %}
+
+                <div class="listing">
+                    <h3>{{ listing.title }}</h3>
+
+                    <p>{{ listing.description }}</p>
+
+                    <strong>
+                        ${{ "%.2f"|format(listing.price) }}
+                    </strong>
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>No listings have been posted yet.</p>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

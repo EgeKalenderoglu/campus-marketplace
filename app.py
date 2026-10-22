@@ -26,6 +26,12 @@ def index():
     return render_template("index.html", listings=listings.all(), q=q)
 
 
+@app.route("/buy/<int:listing_id>")
+def buy_listing(listing_id):
+    listing = db.get_or_404(Listing, listing_id)
+    return render_template("buy_listing.html", listing=listing)
+
+
 @app.route("/create", methods=["GET", "POST"])
 def create_listing():
     if request.method == "POST":

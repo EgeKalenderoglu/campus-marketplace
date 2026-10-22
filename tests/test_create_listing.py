@@ -43,6 +43,9 @@ def test_create_listing_rejects_invalid_price():
 
 
 def test_create_listing_saves_valid_listing():
+    with app.app_context():
+        db.create_all()
+
     client = app.test_client()
     test_title = "ZZZ Valid Listing Test 98765"
 

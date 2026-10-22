@@ -19,8 +19,11 @@ class Listing(db.Model):
 
 @app.route("/")
 def index():
-    listings = Listing.query.order_by(Listing.id.desc()).all()
-    return render_template("index.html", listings=listings)
+    q = request.args.get("q", "")
+    listings = Listing.query.order_by(Listing.id.desc())
+    if q:
+        listings = listings.filter(Listing.title.contains(q))
+    return render_template("index.html", listings=listings.all(), q=q)
 
 
 @app.route("/create", methods=["GET", "POST"])

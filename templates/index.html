@@ -15,6 +15,12 @@
 
         <a class="button" href="/create">Create Listing</a>
 
+        <form method="get" class="search-form">
+            <input type="text" name="q" value="{{ q }}" placeholder="Type here to search listings">
+            <button type="submit">Search</button>
+            <a href="/">Reset search</a>
+        </form>
+
         <h2>Available Listings</h2>
 
         {% if listings %}
@@ -35,7 +41,11 @@
 
         {% else %}
 
-            <p>No listings have been posted yet.</p>
+            {% if q %}
+                <p>No listings found.</p>
+            {% else %}
+                <p>No listings have been posted yet.</p>
+            {% endif %}
 
         {% endif %}
 

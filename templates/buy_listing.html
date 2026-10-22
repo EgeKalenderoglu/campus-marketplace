@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ listing.title }} - Campus Marketplace</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ listing.title }}</h1>
+        <h2>Listing Details</h2>
+        <p>{{ listing.description }}</p>
+        <strong>${{ "%.2f"|format(listing.price) }}</strong>
+        <p><a href="{{ url_for("index") }}">Back to Marketplace</a></p>
+    </div>
+</body>
+</html>

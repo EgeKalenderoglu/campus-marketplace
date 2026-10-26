@@ -1,3 +1,4 @@
+import app as app_module
 from app import app, db, Listing
 
 
@@ -42,7 +43,18 @@ def test_create_listing_rejects_invalid_price():
     assert b"Please enter a valid price" in response.data
 
 
-def test_create_listing_saves_valid_listing():
+def test_create_listing_saves_valid_listing(monkeypatch):
+    monkeypatch.setattr(
+        app_module.moderation,
+        "moderate_listing",
+        lambda title, description: {
+            "allowed": True,
+            "flagged": False,
+            "error": False,
+            "reason": "Listing passed moderation."
+        }
+    )
+
     with app.app_context():
         db.create_all()
 
@@ -73,3 +85,71 @@ def test_create_listing_saves_valid_listing():
         with app.app_context():
             Listing.query.filter_by(title=test_title).delete()
             db.session.commit()
+
+
+def test_flagged_listing_is_not_saved(monkeypatch):
+    test_title = "ZZZ Flagged Integration Test 98765"
+
+    monkeypatch.setattr(
+        app_module.moderation,
+        "moderate_listing",
+        lambda title, description: {
+            "allowed": False,
+            "flagged": True,
+            "error": False,
+            "reason": "Listing was flagged by AI moderation."
+        }
+    )
+
+    with app.app_context():
+        db.create_all()
+
+    client = app.test_client()
+    response = client.post(
+        "/create",
+        data={
+            "title": test_title,
+            "description": "Flagged integration test",
+            "price": "10.00"
+        }
+    )
+
+    assert response.status_code == 200
+    assert b"flagged by AI moderation" in response.data
+
+    with app.app_context():
+        assert Listing.query.filter_by(title=test_title).first() is None
+
+
+def test_moderation_failure_does_not_publish_listing(monkeypatch):
+    test_title = "ZZZ Moderation Failure Test 98765"
+
+    monkeypatch.setattr(
+        app_module.moderation,
+        "moderate_listing",
+        lambda title, description: {
+            "allowed": False,
+            "flagged": False,
+            "error": True,
+            "reason": "Moderation service unavailable. Please try again."
+        }
+    )
+
+    with app.app_context():
+        db.create_all()
+
+    client = app.test_client()
+    response = client.post(
+        "/create",
+        data={
+            "title": test_title,
+            "description": "Moderation failure integration test",
+            "price": "10.00"
+        }
+    )
+
+    assert response.status_code == 200
+    assert b"Moderation service unavailable" in response.data
+
+    with app.app_context():
+        assert Listing.query.filter_by(title=test_title).first() is None

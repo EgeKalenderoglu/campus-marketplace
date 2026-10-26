@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
+import moderation
+
 app = Flask(__name__)
 
 # Local database for Sprint 1
@@ -55,6 +57,14 @@ def create_listing():
             return render_template(
                 "create_listing.html",
                 error="Please enter a valid price."
+            )
+
+        moderation_result = moderation.moderate_listing(title, description)
+
+        if not moderation_result["allowed"]:
+            return render_template(
+                "create_listing.html",
+                error=moderation_result["reason"]
             )
 
         listing = Listing(

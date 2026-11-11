@@ -4,52 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Marketplace</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
 
-    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-0">
+        <div class="container">
+            <a class ="navbar-brand fw-bold text-primary fs-3" style="font-weight: 600;" href="#"> Campus Marketplace </a>
 
-        <h1>Campus Marketplace</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#authNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <a class="button" href="/create">Create Listing</a>
+            <div class="collapse navbar-collapse" id="authNavbar">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"> <a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#faq">Faq</a></li>
+                </ul>
+                
+                <div class="d-flex gap-2">
+                    <a id="sign-in" href="#" class="btn btn-link text-decoration-none text-secondary fw-semibold px-3">Sign In</a>
+                    <a id="register" href="#" class="btn btn-primary fw-semibold px-4 rounded-pill">Register</a>
+                </div>
+            </div>
 
-        <form method="get" class="search-form">
-            <input type="text" name="q" value="{{ q }}" placeholder="Type here to search listings">
-            <button type="submit">Search</button>
-            <a href="/">Reset search</a>
+        </div>
+    </nav>
+
+    <div class="container" style ="width: 85vw; box-sizing: border-box;">
+        <p class="head" style="font-size: xx-large; color: cadetblue; text-align: center; font-weight: bolder;">Mission Statement</p>
+        <p class="lead" style="text-align: center;"> College students often need an affordable and convenient way to buy and sell textbooks, electronics, furniture, clothes, and other goods. There are existing online marketplaces, but they are designed for the public instead of specifically for college students. This can force students to meet up with strangers off campus, and they must determine on their own if the listing can be trusted or not. Campus Marketplace provides a safe marketplace environment for college students. Users are verified using their student email to create a more trusted community. The application will also include designated campus meetup locations, in-app communication, and AI moderation to keep transactions safe and convenient. The platform also has the potential to be monetized by allowing users to promote listings, run ads, or premium features. Campus Marketplace can give students an alternative to larger marketplaces while addressing the safety and convenience issues associated with buying and selling locally. </p>
+    </div>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="py-5 bg-white border-top">
+        <div class="container py-4"> 
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-light p-4">
+                        <h5 class="fw-bold mb-0">1. Student Verification</h5>
+                        <p class="text-secondary">Created, BY students FOR students. Only students with verified university emails can participate in our app </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-light p-4">
+                        <h5 class="fw-bold mb-0">2. Campus Communities</h5>
+                        <p class="text-secondary">Interact with other users from your campus!</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-light p-4">
+                        <h5 class="fw-bold mb-0">3. Marketplace </h5>
+                        <p class="text-secondary"> Buy and Sell Items on the Marketplace by creating and veiwing listings!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+         <section id="faq" class="py-5 bg-light border-top">
+        <div class="container py-4">
+            <div class="bg-white border rounded-4 shadow-sm p-4 p-md-5 text-center max-width-container mx-auto">
+                <h2 class="fw-bold text-dark mb-2">Still have questions?</h2>
+                <p class="text-secondary mb-4 mx-auto" style="max-width: 550px;">
+                    Can't find the answer you're looking for? Reach out directly to our customer support team and we will get back to you within 24 hours.
+                </p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center" style="display:flex; align-items: center; gap: 5%;">
+                    <a href="mailto:support@campus-marketplace.com" class="btn btn-primary fw-semibold px-4 py-2 me-sm-4 mb-3 mb-sm-0">
+                        Email Support
+                    </a>
+                    <a href="#contact" class="btn btn-outline-secondary fw-semibold px-4 py-2">
+                        Open a Ticket
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-white-50 py-4 text-center">
+        <div class="container">
+            <p class="small mb-0" style="color: black">&copy; 2026 Campus Marketplace. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="myBackdrop" class="backdrop"></div>
+
+    <!-- USER REGISTRATION -->
+    <div id="registration" class="popup rounded-4" style="background-color: rgb(244, 244, 244); width: 40vw; border-radius: 25px;">
+        <h3 style="font-weight: 600; font-size: mb-4; text-align: center">Account Registration</h3>
+        <form action="/registration" method="POST" id="registerForm">
+
+            <label for="email">Email</label>
+            <input
+                type="text"
+                id="email"
+                name="email"
+                placeholder="Example: example@gmail.com"
+                required
+            >
+
+            <label for="username">Username</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Example: John_Doe64"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="text"
+                id="password"
+                name="password"
+                placeholder="Example: 12345"
+                required
+            >
+            
+            <div style="display: flex; gap: 50%">
+                <button type="button" class="closeBtn" style="border-radius: 25px; max-width: 45%">Back</button>
+
+                <button type="submit" style="border-radius: 25px; width: 45%;">Complete Registration</button>
+            </div>
+
         </form>
 
-        <h2>Available Listings</h2>
+    </div>
 
-        {% if listings %}
+    <!-- USER LOGIN -->
+    <div id="login" class="popup rounded-4" style="background-color: rgb(244, 244, 244); width: 40vw; border-radius: 25px;">
+        <h3 style="font-weight: 600; font-size: mb-4; text-align: center">User Sign-In</h3>
+         <form action="/login" method="POST" id="loginForm">
 
-            {% for listing in listings %}
+            <label for="username">Username</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Example: John_Doe64"
+                required
+            >
 
-                <div class="listing">
-                    <h3><a href="{{ url_for('buy_listing', listing_id=listing.id) }}">{{ listing.title }}</a></h3>
+            <label for="password">Password</label>
+            <input
+                type="text"
+                id="password"
+                name="password"
+                placeholder="Example: 12345"
+                required
+            >
 
-                    <p>{{ listing.description }}</p>
+            <div style="display: flex; gap: 50%">
+                <button type="button" class="closeBtn" style="border-radius: 25px; max-width: 45%">Back</button>
 
-                    <strong>
-                        ${{ "%.2f"|format(listing.price) }}
-                    </strong>
-                </div>
+                <button type="submit" style="border-radius: 25px; width: 45%;">Login</button>
+            </div>
 
-            {% endfor %}
-
-        {% else %}
-
-            {% if q %}
-                <p>No listings found.</p>
-            {% else %}
-                <p>No listings have been posted yet.</p>
-            {% endif %}
-
-        {% endif %}
+        </form>
 
     </div>
+
+
+    <!-- Bootstrap JavaScript Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    <!-- CUSTOM Isolated JavaScript File -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
 </html>

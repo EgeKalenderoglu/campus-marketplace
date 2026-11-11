@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bootstrap import Bootstrap5
-import os
+import os 
 import secrets
 import extensions
 import models
+import moderation
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "dev-secret-key-change-me"
@@ -30,6 +31,12 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for("main"))
     return render_template("index.html")
+
+
+@app.route("/buy/<int:listing_id>")
+def buy_listing(listing_id):
+    listing = db.get_or_404(models.Listing, listing_id)
+    return render_template("buy_listing.html", listing=listing)
 
 
 @app.route("/registration", methods=["GET", "POST"])
@@ -97,8 +104,11 @@ def logout():
 @app.route("/main")
 @login_required
 def main():
-    listings = models.Listing.query.order_by(models.Listing.id.desc()).all()
-    return render_template("main.html", listings=listings)
+    q = request.args.get("q", "")
+    listings = models.Listing.query.order_by(models.Listing.id.desc())
+    if q:
+        listings = listings.filter(models.Listing.title.contains(q))
+    return render_template("main.html", listings=listings.all(), q=q)
 
 
 @app.route("/verification", methods=["GET", "POST"])
@@ -129,7 +139,7 @@ def verify():
     )
 
 
-@app.route("/create_listing", methods=["GET", "POST"])
+@app.route("/create", methods=["GET", "POST"])
 @login_required
 def create_listing():
     if not current_user.is_verified:
@@ -150,6 +160,14 @@ def create_listing():
         except ValueError:
             return render_template("create_listing.html", error="Please enter a valid price.")
 
+        moderation_result = moderation.moderate_listing(title, description)
+
+        if not moderation_result["allowed"]:
+            return render_template(
+                "create_listing.html",
+                error=moderation_result["reason"]
+            )
+
         listing = models.Listing(
             title=title,
             description=description,
@@ -164,10 +182,10 @@ def create_listing():
     return render_template("create_listing.html", name=current_user.username)
 
 
-@app.route("/user")
+@app.route("/user_profile")
 @login_required
 def user_profile():
-    return render_template("user.html", user=current_user)
+    return render_template("user_profile.html", user=current_user)
 
 
 @app.route("/verificaiton")

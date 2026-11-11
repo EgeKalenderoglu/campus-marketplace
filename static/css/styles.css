@@ -24,6 +24,10 @@ form {
     gap: 10px;
 }
 
+.search-form {
+    margin-top: 25px;
+}
+
 input,
 textarea {
     padding: 12px;

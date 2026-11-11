@@ -21,7 +21,13 @@
     </nav>
 
     <div class="container">
-        <a class="button" href="/create_listing">Create Listing</a>
+        <a class="button" href="/create">Create Listing</a>
+
+        <form method="get" class="search-form">
+            <input type="text" name="q" value="{{ q }}" placeholder="Type here to search listings">
+            <button type="submit">Search</button>
+            <a href="/main">Reset search</a>
+        </form>
 
         <h2>Available Listings</h2>
 
@@ -30,7 +36,7 @@
             {% for listing in listings %}
 
                 <div class="listing">
-                    <h3>{{ listing.title }}</h3>
+                    <h3><a href="{{ url_for('buy_listing', listing_id=listing.id) }}">{{ listing.title }}</a></h3>
 
                     <p>{{ listing.description }}</p>
 
@@ -40,11 +46,15 @@
                 </div>
 
             {% endfor %}
-
+        
         {% else %}
 
-            <p>No listings have been posted yet.</p>
-
+            {% if q %}
+                <p>No listings found.</p>
+            {% else %}
+                <p>No listings have been posted yet.</p>
+            {% endif %}
+        
         {% endif %}
 
     </div>

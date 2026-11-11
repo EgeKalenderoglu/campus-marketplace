@@ -7,7 +7,7 @@ body {
 
 .container {
     width: 90%;
-    max-width: 700px;
+    max-width: 100vw;
     margin: 40px auto;
     background: white;
     padding: 30px;
@@ -55,4 +55,80 @@ button,
 
 .error {
     color: red;
+}
+
+/* Typography & Clean Layout Tweaks */
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #212529;
+}
+
+/* Make the navbar clean and distinct */
+.navbar {
+    transition: all 0.3s ease;
+}
+
+/* Extra bold utility heading styling */
+.fw-extrabold {
+    font-weight: 800;
+}
+
+.tracking-tight {
+    letter-spacing: -0.025em;
+}
+
+/* FORCE A SLIM NAVBAR PROFILE */
+.navbar {
+    min-height: 100px !important;
+    height: 100px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Align the text inside vertically to stop the stretch */
+.navbar .container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Shrink the inner links and button heights to sit clean in a 45px bar */
+.navbar-brand {
+    font-size: 1.1rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-right: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: 0.9rem;
+}
+
+.backdrop {
+  display: none;          
+  position: fixed;        
+  top: 0;
+  left: 0;
+  width: 100vw;          
+  height: 100vh;        
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;          
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: white;
+    padding: 2rem;
+    z-index: 1000;
+}
+
+.is-active {
+    display: block;
 }

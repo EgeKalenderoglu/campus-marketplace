@@ -1,22 +1,19 @@
 from typing import List
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from extensions import db 
-
-
-
     
 
-class User (db.Model):
+class User (UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(254), nullable = False)
-    username = db.Column(db.String(30), nullable = False)
+    email = db.Column(db.String(254), nullable = False, unique=True)
+    username = db.Column(db.String(30), nullable = False, unique=True)
     hashed_password = db.Column(db.String(255), nullable = False)
-    # listings: Mapped[List["Listing"]] = relationship(back_populates="user", lazy="selectin")
-    # cognito_sub = db.Column(db.String(120), unique=True, nullable=False)
-    # cognito_sub = db.Column(db.String(120), unique=True, nullable=False)
+    is_verified = db.Column(db.Boolean, nullable = False, default=False)
+    verification_token = db.Column(db.String(255), nullable=True)
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password, method="pbkdf2")
@@ -28,8 +25,13 @@ class Listing(db.Model):
 
     __tablename__ = "listings"
     id = db.Column(db.Integer, primary_key=True)
-    # user: Mapped["User"] = relationship(back_populates="listings") #created a realtionship with the user to make it easier to add the rest of the CRUD operations in the future
-    #user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Float, nullable=False)
+
+# will have to manually populate and create communities within db, users and other processes should NOT be able to access CRUD methods 
+# class Community(db.Model):
+#     __tablename__ = "community"
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String(100), nullable=False)
+#     # users: Mapped[List]

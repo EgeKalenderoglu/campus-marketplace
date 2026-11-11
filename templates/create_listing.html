@@ -10,7 +10,17 @@
 
 <body>
 
-    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-2">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Campus Marketplace</h3>
+            <div class="d-flex align-items-center gap-3">
+                <a href="/user" class="btn btn-outline-primary">My Profile</a>
+                <a href="/logout" class="btn btn-danger">Log Out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
         <h1>Create Listing</h1>
 
         {% if error %}
@@ -51,7 +61,9 @@
 
         </form>
 
-        <a href="/main_page">Back to Marketplace</a>
+        <div class="mt-3">
+            <a href="/main">Back to Marketplace</a>
+        </div>
     </div>
 
     <!-- Bootstrap JavaScript Dependencies -->
